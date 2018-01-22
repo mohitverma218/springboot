@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class SuperheroAllyDetailVO implements Serializable {
 
 	private static final long serialVersionUID = 2074377663703556654L;
-	
+
 	private String name;
 	private String pseudonym;
-	
+
 	public SuperheroAllyDetailVO() {
 	}
-	
+
 	public SuperheroAllyDetailVO(String name, String pseudonym) {
 		super();
 		this.name = name;

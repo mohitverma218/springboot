@@ -33,30 +33,30 @@ import com.sms.repository.SuperheroRepository;
 public class SuperheroManagementSystemIntegrationTest {
 
 	@Autowired
-    private MockMvc mvc;
-	
+	private MockMvc mvc;
+
 	@Autowired
 	private SuperheroRepository repository;
-	
+
 	Superhero superhero;
-	
+
 	@Before
-    public void setUp() throws ParseException {
+	public void setUp() throws ParseException {
 		superhero = new Superhero("Robert Bruce Banner", "Hulk", SuperheroPublisher.MARVEL,
 				new SimpleDateFormat("yyyy-MM-dd").parse("1962-05-01"));
-       
+
 		repository.save(superhero);
-    }
-	
+	}
+
 	@Test
 	public void testGetAllSuperheroes()
-	  throws Exception {
+			throws Exception {
 		mvc.perform(get("/api/superheroes")
-			      .contentType(MediaType.APPLICATION_JSON)
-			      .with(httpBasic("sms", "power_access@218")))
-			      .andExpect(status().isOk())
-			      .andExpect(content()
-			      .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-			      .andExpect(jsonPath("$[0].pseudonym", is("Hulk")));
+				.contentType(MediaType.APPLICATION_JSON)
+				.with(httpBasic("sms", "power_access@218")))
+		.andExpect(status().isOk())
+		.andExpect(content()
+				.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$[0].pseudonym", is("Hulk")));
 	}
 }

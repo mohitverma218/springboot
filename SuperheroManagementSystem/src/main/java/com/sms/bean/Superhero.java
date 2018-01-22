@@ -16,45 +16,45 @@ import javax.persistence.*;
 @Table(name = "superhero")
 @EntityListeners(AuditingEntityListener.class)
 public class Superhero {
-  
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @NotBlank
-    private String name;
+	@NotBlank
+	private String name;
 
-    @NotBlank
-    private String pseudonym;
-    
-    @Enumerated(EnumType.STRING)
-    private SuperheroPublisher publisher;
-    
-    @OneToMany(mappedBy = "superhero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Skill> skills;
-    
-    @OneToMany(mappedBy = "superhero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Ally> allies;
-    
-    @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date firstAppearanceOn;
+	@NotBlank
+	private String pseudonym;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
+	@Enumerated(EnumType.STRING)
+	private SuperheroPublisher publisher;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
-    
-    public Superhero() {
+	@OneToMany(mappedBy = "superhero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Skill> skills;
+
+	@OneToMany(mappedBy = "superhero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Ally> allies;
+
+	@Column(nullable = false)
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	private Date firstAppearanceOn;
+
+	@Column(nullable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreatedDate
+	private Date createdAt;
+
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@LastModifiedDate
+	private Date updatedAt;
+
+	public Superhero() {
 		super();
 	}
-    
+
 	public Superhero(String name, String pseudonym, SuperheroPublisher publisher, Date firstAppearanceOn) {
 		super();
 		this.name = name;

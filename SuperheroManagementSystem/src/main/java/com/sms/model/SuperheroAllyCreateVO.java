@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 
 public class SuperheroAllyCreateVO implements Serializable {
-	
+
 	private static final long serialVersionUID = 6648564078266963331L;
 
 	@NotNull(message = "name can not be null.")
@@ -15,11 +15,11 @@ public class SuperheroAllyCreateVO implements Serializable {
 
 	@NotNull(message = "allies can not be null.")
 	private List<String> allies;
-	
+
 	public SuperheroAllyCreateVO() {
 		super();
 	}
-	
+
 	public SuperheroAllyCreateVO(String name, List<String> allies) {
 		super();
 		this.name = name;
@@ -29,7 +29,7 @@ public class SuperheroAllyCreateVO implements Serializable {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}

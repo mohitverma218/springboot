@@ -7,32 +7,32 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sms.bean.SuperheroPublisher;
- 
-public class SuperheroCreateVO implements Serializable{
-	
-	private static final long serialVersionUID = -4196114010714851178L;
-	
 
-    @NotNull(message = "name can not be null.")
+public class SuperheroCreateVO implements Serializable{
+
+	private static final long serialVersionUID = -4196114010714851178L;
+
+
+	@NotNull(message = "name can not be null.")
 	private String name;
-   
-    @NotNull(message = "pseudonym can not be null.")
+
+	@NotNull(message = "pseudonym can not be null.")
 	private String pseudonym;
-    
-    @NotNull(message = "publisher can not be null.")
+
+	@NotNull(message = "publisher can not be null.")
 	private SuperheroPublisher publisher = SuperheroPublisher.INDEPENDENT;
-    
-    @NotNull(message = "skills can not be null.")
-    private List<String> skills;
-	
-    @NotNull(message = "firstAppearanceOn can not be null.")
+
+	@NotNull(message = "skills can not be null.")
+	private List<String> skills;
+
+	@NotNull(message = "firstAppearanceOn can not be null.")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date firstAppearanceOn;
-    
-    public SuperheroCreateVO() {
+
+	public SuperheroCreateVO() {
 		super();
 	}
-	
+
 	public SuperheroCreateVO(String name, String pseudonym, SuperheroPublisher publisher, List<String> skills,
 			Date firstAppearanceOn) {
 		super();
@@ -60,7 +60,7 @@ public class SuperheroCreateVO implements Serializable{
 	public void setPublisher(SuperheroPublisher publisher) {
 		this.publisher = publisher;
 	}
-	
+
 	public List<String> getSkills() {
 		return skills;
 	}

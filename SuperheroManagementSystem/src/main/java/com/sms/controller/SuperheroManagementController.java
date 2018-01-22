@@ -27,7 +27,7 @@ public class SuperheroManagementController {
 	public SuperheroCreateVO createSuperhero(@Valid @RequestBody SuperheroCreateVO superheroCreateVO) {
 		return superheroManagementService.createSuperhero(superheroCreateVO);
 	}
-	
+
 	@PostMapping("/superheroes/allies")
 	public SuperheroDetailVO createSuperheroAllies(@Valid @RequestBody SuperheroAllyCreateVO superheroAllyCreateVO) {
 		return superheroManagementService.createSuperheroAllies(superheroAllyCreateVO);

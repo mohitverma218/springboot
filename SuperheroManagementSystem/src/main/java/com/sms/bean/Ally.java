@@ -14,35 +14,35 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "allies")
 @EntityListeners(AuditingEntityListener.class)
 public class Ally {
-  
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @ManyToOne
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@ManyToOne
 	@JoinColumn (name="superhero_id")
 	@JsonBackReference
 	private Superhero superhero;
-    
-    @ManyToOne
+
+	@ManyToOne
 	@JoinColumn (name="ally_id")
 	@JsonBackReference
 	private Superhero ally;
-    
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
-    
-    public Ally() {
+	@Column(nullable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreatedDate
+	private Date createdAt;
+
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@LastModifiedDate
+	private Date updatedAt;
+
+	public Ally() {
 		super();
 	}
-    
+
 	public Ally(Superhero superhero, Superhero ally) {
 		super();
 		this.superhero = superhero;

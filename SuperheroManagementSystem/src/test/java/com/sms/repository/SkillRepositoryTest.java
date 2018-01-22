@@ -20,23 +20,23 @@ import com.sms.bean.SuperheroPublisher;
 public class SkillRepositoryTest {
 
 	@Autowired
-    private TestEntityManager entityManager;
- 
-    @Autowired
-    private SkillRepository skillRepository;
- 
-    @Test
-    public void testFindSuperheroByName() throws ParseException {
-        Superhero superhero = new Superhero("Robert Bruce Banner", "Hulk", SuperheroPublisher.MARVEL, new SimpleDateFormat("yyyy-MM-dd").parse("1962-05-01"));
-        entityManager.persist(superhero);
-        entityManager.flush();
-        
-        Skill skill = new Skill("Superhuman Strength", superhero);
-        entityManager.persist(skill);
-        entityManager.flush();
-        
-        Skill found = skillRepository.findByNameAndSuperhero(skill.getName(), superhero);
-        
-        assertThat(found.getName()).isEqualTo(skill.getName());
-    }
+	private TestEntityManager entityManager;
+
+	@Autowired
+	private SkillRepository skillRepository;
+
+	@Test
+	public void testFindSuperheroByName() throws ParseException {
+		Superhero superhero = new Superhero("Robert Bruce Banner", "Hulk", SuperheroPublisher.MARVEL, new SimpleDateFormat("yyyy-MM-dd").parse("1962-05-01"));
+		entityManager.persist(superhero);
+		entityManager.flush();
+
+		Skill skill = new Skill("Superhuman Strength", superhero);
+		entityManager.persist(skill);
+		entityManager.flush();
+
+		Skill found = skillRepository.findByNameAndSuperhero(skill.getName(), superhero);
+
+		assertThat(found.getName()).isEqualTo(skill.getName());
+	}
 }

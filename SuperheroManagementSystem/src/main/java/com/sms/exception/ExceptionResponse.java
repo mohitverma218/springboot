@@ -3,12 +3,12 @@ package com.sms.exception;
 import java.util.List;
 
 public class ExceptionResponse {
-	
+
 	private String code;
-    private String message;
-    private List<String> errors;
-	
-    public String getCode() {
+	private String message;
+	private List<String> errors;
+
+	public String getCode() {
 		return code;
 	}
 	public void setCode(String code) {

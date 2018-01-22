@@ -61,29 +61,29 @@ public class SuperheroManagementService {
 
 		return makeSuperheroCreateVO(savedBean, skillBeans);
 	}
-	
+
 	public SuperheroDetailVO createSuperheroAllies(SuperheroAllyCreateVO superheroAllyCreateVO) {
 
 		String name = superheroAllyCreateVO.getName();
 		Superhero superhero = validateAndGetSuperheroRecord(name);
-		
+
 		List<Ally> allies = new ArrayList<Ally>();
-		
+
 		for(String allyName : superheroAllyCreateVO.getAllies()) {
 			Superhero allySuperhero = validateAndGetSuperheroRecord(allyName);
-			
+
 			//confirming that allies belong to same universe
 			if(!allySuperhero.getPublisher().equals(superhero.getPublisher())) {
 				String message = "Ally : "+ allySuperhero.getPseudonym() +" and Superhero : "+superhero.getPseudonym()+" should belong to the same universe i.e : "+superhero.getPublisher().name();
 				throw new AllyPublisherNotMatchingException(message);
 			}
-			
+
 			Ally  ally = allyRepository.findBySuperheroAndAlly(superhero, allySuperhero);
 			if(ally == null) {
 				ally = new Ally(superhero,allySuperhero);
 			}
 			allies.add(ally);
-			
+
 			Ally  allyReverse = allyRepository.findBySuperheroAndAlly(allySuperhero, superhero);
 			if(allyReverse == null) {
 				allyReverse = new Ally(allySuperhero,superhero);
@@ -111,11 +111,11 @@ public class SuperheroManagementService {
 
 		return superheroDetailVOs;
 	}
-	
+
 	public SuperheroDetailVO retrieveSuperheroes(String name) {
 		return makeSuperheroDetailVO(validateAndGetSuperheroRecord(name));
 	}
-	
+
 	private Superhero validateAndGetSuperheroRecord(String name) {
 		Superhero superhero = superheroRepository.findByPseudonym(name);
 		if(superhero == null) {
@@ -136,14 +136,14 @@ public class SuperheroManagementService {
 				skills.add(skill.getName());
 			}
 		}
-		
+
 		List<SuperheroAllyDetailVO> allies = new ArrayList<SuperheroAllyDetailVO>();
 		if(superhero.getAllies()!=null&&!superhero.getAllies().isEmpty()) {
 			for(Ally ally : superhero.getAllies()) {
 				allies.add(new SuperheroAllyDetailVO(ally.getAlly().getName(),ally.getAlly().getPseudonym()));
 			}
 		}
-		
+
 		return new SuperheroDetailVO(superhero.getName(),superhero.getPseudonym(),
 				superhero.getPublisher(),skills,superhero.getFirstAppearanceOn(),allies);
 	}
@@ -156,7 +156,7 @@ public class SuperheroManagementService {
 				skills.add(skill.getName());
 			}
 		}
-		
+
 		return new SuperheroCreateVO(superhero.getName(),superhero.getPseudonym(),
 				superhero.getPublisher(),skills,superhero.getFirstAppearanceOn());
 	}
