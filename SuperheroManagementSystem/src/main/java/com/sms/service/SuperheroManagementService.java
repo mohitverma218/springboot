@@ -1,15 +1,13 @@
 package com.sms.service;
 
-import java.util.ArrayList; 
-import java.util.Date;
+import java.util.ArrayList;  
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.sms.bean.Ally;
 import com.sms.bean.Skill;
 import com.sms.bean.Superhero;
-import com.sms.bean.SuperheroPublisher;
+import com.sms.exception.AllyPublisherNotMatchingException;
 import com.sms.exception.SuperheroAlreadyExistException;
 import com.sms.exception.SuperheroNotFoundException;
 import com.sms.model.SuperheroAllyCreateVO;
@@ -34,10 +32,7 @@ public class SuperheroManagementService {
 
 	public SuperheroCreateVO createSuperhero(SuperheroCreateVO superheroCreateVO) {
 
-		String name = superheroCreateVO.getName();
 		String pseudonym = superheroCreateVO.getPseudonym();
-		SuperheroPublisher publisher = superheroCreateVO.getPublisher();
-		Date appearanceOn = superheroCreateVO.getFirstAppearanceOn();
 
 		Superhero databaseRecord = superheroRepository.findByPseudonym(pseudonym);
 		if(databaseRecord!=null) {
@@ -45,11 +40,8 @@ public class SuperheroManagementService {
 			throw new SuperheroAlreadyExistException(message);
 		}
 
-		Superhero bean = new Superhero();
-		bean.setName(name);
-		bean.setPseudonym(pseudonym);
-		bean.setPublisher(publisher);
-		bean.setFirstAppearanceOn(appearanceOn);
+		Superhero bean = new Superhero(superheroCreateVO.getName(),superheroCreateVO.getPseudonym(),
+				superheroCreateVO.getPublisher(),superheroCreateVO.getFirstAppearanceOn());
 
 		Superhero savedBean = superheroRepository.saveAndFlush(bean);
 
@@ -59,9 +51,7 @@ public class SuperheroManagementService {
 			for(String skillName : skills) {
 				Skill skill = skillRepository.findByNameAndSuperhero(skillName, savedBean);
 				if(skill == null) {
-					skill = new Skill();
-					skill.setName(skillName);
-					skill.setSuperhero(savedBean);
+					skill = new Skill(skillName,savedBean);
 				}
 				skillBeans.add(skill);
 			}
@@ -82,19 +72,21 @@ public class SuperheroManagementService {
 		for(String allyName : superheroAllyCreateVO.getAllies()) {
 			Superhero allySuperhero = validateAndGetSuperheroRecord(allyName);
 			
+			//confirming that allies belong to same universe
+			if(!allySuperhero.getPublisher().equals(superhero.getPublisher())) {
+				String message = "Ally : "+ allySuperhero.getPseudonym() +" and Superhero : "+superhero.getPseudonym()+" should belong to the same universe i.e : "+superhero.getPublisher().name();
+				throw new AllyPublisherNotMatchingException(message);
+			}
+			
 			Ally  ally = allyRepository.findBySuperheroAndAlly(superhero, allySuperhero);
 			if(ally == null) {
-				ally = new Ally();
-				ally.setSuperhero(superhero);
-				ally.setAlly(allySuperhero);
+				ally = new Ally(superhero,allySuperhero);
 			}
 			allies.add(ally);
 			
 			Ally  allyReverse = allyRepository.findBySuperheroAndAlly(allySuperhero, superhero);
 			if(allyReverse == null) {
-				allyReverse = new Ally();
-				allyReverse.setSuperhero(allySuperhero);
-				allyReverse.setAlly(superhero);
+				allyReverse = new Ally(allySuperhero,superhero);
 			}
 			allies.add(allyReverse);
 		}
@@ -114,16 +106,14 @@ public class SuperheroManagementService {
 
 		List<SuperheroDetailVO> superheroDetailVOs = new ArrayList<SuperheroDetailVO>();
 		for(Superhero superhero : superheroes) {
-			SuperheroDetailVO detailVO = makeSuperheroDetailVO(superhero);
-			superheroDetailVOs.add(detailVO);
+			superheroDetailVOs.add(makeSuperheroDetailVO(superhero));
 		}
 
 		return superheroDetailVOs;
 	}
 	
 	public SuperheroDetailVO retrieveSuperheroes(String name) {
-		Superhero superhero = validateAndGetSuperheroRecord(name);
-		return makeSuperheroDetailVO(superhero);
+		return makeSuperheroDetailVO(validateAndGetSuperheroRecord(name));
 	}
 	
 	private Superhero validateAndGetSuperheroRecord(String name) {
@@ -139,12 +129,6 @@ public class SuperheroManagementService {
 	}
 
 	private SuperheroDetailVO makeSuperheroDetailVO(Superhero superhero) {
-		SuperheroDetailVO superheroDetailVO = new SuperheroDetailVO();
-
-		superheroDetailVO.setName(superhero.getName());
-		superheroDetailVO.setPseudonym(superhero.getPseudonym());
-		superheroDetailVO.setPublisher(superhero.getPublisher());
-		superheroDetailVO.setFirstAppearanceOn(superhero.getFirstAppearanceOn());
 
 		List<String> skills = new ArrayList<String>();
 		if(superhero.getSkills()!=null&&!superhero.getSkills().isEmpty()) {
@@ -152,28 +136,19 @@ public class SuperheroManagementService {
 				skills.add(skill.getName());
 			}
 		}
-		superheroDetailVO.setSkills(skills);
 		
 		List<SuperheroAllyDetailVO> allies = new ArrayList<SuperheroAllyDetailVO>();
 		if(superhero.getAllies()!=null&&!superhero.getAllies().isEmpty()) {
 			for(Ally ally : superhero.getAllies()) {
-				SuperheroAllyDetailVO allyDetailVO = new SuperheroAllyDetailVO();
-				allyDetailVO.setName(ally.getAlly().getName());
-				allyDetailVO.setPseudonym(ally.getAlly().getPseudonym());
-				allies.add(allyDetailVO);
+				allies.add(new SuperheroAllyDetailVO(ally.getAlly().getName(),ally.getAlly().getPseudonym()));
 			}
 		}
-		superheroDetailVO.setAllies(allies);
-		return superheroDetailVO;
+		
+		return new SuperheroDetailVO(superhero.getName(),superhero.getPseudonym(),
+				superhero.getPublisher(),skills,superhero.getFirstAppearanceOn(),allies);
 	}
 
 	private SuperheroCreateVO makeSuperheroCreateVO(Superhero superhero,List<Skill> skillBeans) {
-		SuperheroCreateVO superheroCreateVO = new SuperheroCreateVO();
-
-		superheroCreateVO.setName(superhero.getName());
-		superheroCreateVO.setPseudonym(superhero.getPseudonym());
-		superheroCreateVO.setPublisher(superhero.getPublisher());
-		superheroCreateVO.setFirstAppearanceOn(superhero.getFirstAppearanceOn());
 
 		List<String> skills = new ArrayList<String>();
 		if(skillBeans!=null&&!skillBeans.isEmpty()) {
@@ -181,7 +156,8 @@ public class SuperheroManagementService {
 				skills.add(skill.getName());
 			}
 		}
-		superheroCreateVO.setSkills(skills);
-		return superheroCreateVO;
+		
+		return new SuperheroCreateVO(superhero.getName(),superhero.getPseudonym(),
+				superhero.getPublisher(),skills,superhero.getFirstAppearanceOn());
 	}
 }

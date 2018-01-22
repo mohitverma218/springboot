@@ -15,11 +15,21 @@ public class SuperheroAllyCreateVO implements Serializable {
 
 	@NotNull(message = "allies can not be null.")
 	private List<String> allies;
+	
+	public SuperheroAllyCreateVO() {
+		super();
+	}
+	
+	public SuperheroAllyCreateVO(String name, List<String> allies) {
+		super();
+		this.name = name;
+		this.allies = allies;
+	}
 
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}

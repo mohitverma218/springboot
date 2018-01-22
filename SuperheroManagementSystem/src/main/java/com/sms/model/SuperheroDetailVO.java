@@ -1,6 +1,9 @@
 package com.sms.model;
 
+import java.util.Date;
 import java.util.List;
+
+import com.sms.bean.SuperheroPublisher;
 
 public class SuperheroDetailVO extends SuperheroCreateVO{
 	
@@ -8,6 +11,15 @@ public class SuperheroDetailVO extends SuperheroCreateVO{
 	
 	private List<SuperheroAllyDetailVO> allies;
 	
+	public SuperheroDetailVO() {
+		super();
+	}
+	
+	public SuperheroDetailVO(String name, String pseudonym, SuperheroPublisher publisher, List<String> skills,
+			Date firstAppearanceOn, List<SuperheroAllyDetailVO> allies) {
+		super(name, pseudonym, publisher, skills, firstAppearanceOn);
+		this.allies = allies;
+	}
 	public List<SuperheroAllyDetailVO> getAllies() {
 		return allies;
 	}

@@ -37,6 +37,16 @@ public class Skill {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+    
+    public Skill() {
+		super();
+	}
+
+	public Skill(String name, Superhero superhero) {
+		super();
+		this.name = name;
+		this.superhero = superhero;
+	}
 
 	public Long getId() {
 		return id;

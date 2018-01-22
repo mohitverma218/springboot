@@ -50,6 +50,18 @@ public class Superhero {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+    
+    public Superhero() {
+		super();
+	}
+    
+	public Superhero(String name, String pseudonym, SuperheroPublisher publisher, Date firstAppearanceOn) {
+		super();
+		this.name = name;
+		this.pseudonym = pseudonym;
+		this.publisher = publisher;
+		this.firstAppearanceOn = firstAppearanceOn;
+	}
 
 	public Long getId() {
 		return id;

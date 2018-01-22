@@ -28,7 +28,20 @@ public class SuperheroCreateVO implements Serializable{
     @NotNull(message = "firstAppearanceOn can not be null.")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date firstAppearanceOn;
+    
+    public SuperheroCreateVO() {
+		super();
+	}
 	
+	public SuperheroCreateVO(String name, String pseudonym, SuperheroPublisher publisher, List<String> skills,
+			Date firstAppearanceOn) {
+		super();
+		this.name = name;
+		this.pseudonym = pseudonym;
+		this.publisher = publisher;
+		this.skills = skills;
+		this.firstAppearanceOn = firstAppearanceOn;
+	}
 	public String getName() {
 		return name;
 	}

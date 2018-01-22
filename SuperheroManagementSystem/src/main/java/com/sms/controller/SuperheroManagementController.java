@@ -1,9 +1,7 @@
 package com.sms.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.beans.factory.annotation.Autowired;   
 import org.springframework.web.bind.annotation.*;
-
-import com.sms.exception.SuperheroNotFoundException;
 import com.sms.model.SuperheroAllyCreateVO;
 import com.sms.model.SuperheroCreateVO;
 import com.sms.model.SuperheroDetailVO;
@@ -36,7 +34,7 @@ public class SuperheroManagementController {
 	}
 
 	@GetMapping("/superheroes/detail")
-	public SuperheroDetailVO getNoteById(@Valid @RequestParam(value = "name") String name) {
+	public SuperheroDetailVO getSuperheroByName(@Valid @RequestParam(value = "name") String name) {
 		return superheroManagementService.retrieveSuperheroes(name);
 	}
 }

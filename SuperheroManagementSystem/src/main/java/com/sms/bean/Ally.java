@@ -38,6 +38,16 @@ public class Ally {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+    
+    public Ally() {
+		super();
+	}
+    
+	public Ally(Superhero superhero, Superhero ally) {
+		super();
+		this.superhero = superhero;
+		this.ally = ally;
+	}
 
 	public Long getId() {
 		return id;
